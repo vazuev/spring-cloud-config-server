@@ -50,6 +50,7 @@ jobs:
           -e BP_JVM_TYPE=${{ matrix.jvmType }}
           -e BP_JVM_VERSION=${{ matrix.jvmVersion }}
           -e BP_GRADLE_BUILD_ARGUMENTS="-PjvmVersion=${{ matrix.jvmVersion }} -PjvmType=${{ matrix.jvmType }} --no-daemon assemble"
+          --cache-image $REGISTRY/$GITHUB_REPOSITORY-build-cache:$TAG
           --publish
   integration-test:
     name: Verify Java ${{ matrix.jvmVersion }} ${{ matrix.jvmType }} image with ${{ matrix.verify.label }}
