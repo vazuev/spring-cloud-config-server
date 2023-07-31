@@ -85,9 +85,10 @@ internal class RedisBackendConfiguration
 internal class SecurityConfiguration{
     @Bean
     open fun securityFilterChain(http: HttpSecurity): SecurityFilterChain {
-        http.csrf()
-            .ignoringAntMatchers("/encrypt/**", "/decrypt/**")
-        return http.build()
+        http.csrf().disable().authorizeRequests()
+            .anyRequest().authenticated().and()
+            .httpBasic();
+        return http.build();
     }
 }
 
