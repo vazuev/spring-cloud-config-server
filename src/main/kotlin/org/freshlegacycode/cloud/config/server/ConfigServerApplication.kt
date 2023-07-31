@@ -16,9 +16,12 @@ import org.springframework.cloud.bus.PathServiceMatcherAutoConfiguration
 import org.springframework.cloud.bus.jackson.BusJacksonAutoConfiguration
 import org.springframework.cloud.config.monitor.EnvironmentMonitorAutoConfiguration
 import org.springframework.cloud.config.server.EnableConfigServer
+import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
 import org.springframework.context.annotation.Import
 import org.springframework.context.annotation.Profile
+import org.springframework.security.config.annotation.web.builders.HttpSecurity
+import org.springframework.security.web.SecurityFilterChain
 import org.springframework.cloud.stream.binder.kafka.config.ExtendedBindingHandlerMappingsProviderConfiguration as KafkaBinderAutoConfiguration
 import org.springframework.cloud.stream.binder.rabbit.config.ExtendedBindingHandlerMappingsProviderConfiguration as RabbitBinderAutoConfiguration
 
@@ -79,7 +82,14 @@ internal class RedisBackendConfiguration
 @Profile("security")
 @Configuration
 @Import(ManagementWebSecurityAutoConfiguration::class, SecurityAutoConfiguration::class)
-internal class SecurityConfiguration
+internal class SecurityConfiguration{
+    @Bean
+    open fun securityFilterChain(http: HttpSecurity): SecurityFilterChain {
+        http.csrf()
+            .ignoringAntMatchers("/encrypt/**", "/decrypt/**")
+        return http.build()
+    }
+}
 
 fun main(args: Array<String>) {
     runApplication<ConfigServerApplication>(*args)
