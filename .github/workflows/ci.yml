@@ -8,7 +8,7 @@ on:
 
 env:
   REGISTRY: docker.maground.com
-  REGISTRY_USER: vzuev
+  REGISTRY_USER: publisher
   IMAGE_NAME: ${{ github.repository }}
 
 jobs:
